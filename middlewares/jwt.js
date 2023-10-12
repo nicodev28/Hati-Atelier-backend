@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const logger = require('../tools/logger');
 
 const secret = process.env.JWT_SECRET || "MonPassword";
 const expiry = process.env.JWT_EXPIRY || "3d";
@@ -20,6 +21,7 @@ let checkToken = (req, res, next) => {
 
         jwt.verify(token, secret, (err, decoded) => {
             if (err) {
+                logger.log('error','Invalid token');
                 return next(new Error("Invalid token"));
             }
 
@@ -27,6 +29,7 @@ let checkToken = (req, res, next) => {
             next();
         });
     } else {
+        logger.log('error','No token provided');
         res.status(403).json({
             message: "No token provided"
         });

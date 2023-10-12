@@ -21,7 +21,8 @@ router.post('/register', async (req, res) => {
     if(user) {
         res.json(user);
     } else {
-        res.json('error');
+        logger.log('error', 'user creation error')
+        res.json('user creation error');
     }
 });
 
@@ -31,10 +32,12 @@ router.post('/login', async (req, res) => {
 
     const user = await UserModel.findOne({ username });
     if(!user) {
-        res.status(401).json('Username or Password does not match')
+        logger.log('error', 'Username or Password does not match');
+        res.status(401).json('Username or Password does not match');
     } else {
         const validPassword = await bcrypt.compare(password, user.password);
         if(!validPassword) {
+            logger.log('error', 'Username or Password does not match');
             res.status(401).json('Username or Password does not match');
         } else {
             const token = getToken(user);
