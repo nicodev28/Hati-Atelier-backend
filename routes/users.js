@@ -2,9 +2,10 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const { default: mongoose } = require('mongoose');
 const { getToken, checkToken } = require('../middlewares/jwt');
+const logger = require('../tools/logger');
 
 const router = express.Router();
-const UserModel = mongoose.model('user');
+const UserModel = mongoose.model('User');
 
 // création d'un nouvel utilisateur
 router.post('/register', async (req, res) => {
